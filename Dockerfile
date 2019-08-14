@@ -5,6 +5,7 @@ RUN dpkg --add-architecture i386
 
 RUN  apt-get -y update
 RUN apt-get -y install gcc-multilib libc6:i386 libstdc++6:i386 libncurses5:i386 texi2html chrpath diffstat subversion libgl1-mesa-dev libglu1-mesa-dev libsdl1.2-dev texinfo gawk gcc gcc-multilib help2man g++ git-core python-gtk2 bash diffutils xz-utils make file screen bzip2 wget ccache mc sudo 
+#LTS
+RUN apt-get -y install gawk wget git-core diffstat unzip texinfo gcc-multilib build-essential chrpath socat cpio python python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping libsdl1.2-dev xterm
 RUN apt-get install -y byobu vim
 RUN useradd build_user
-USER build_user
