@@ -6,5 +6,28 @@ RUN dpkg --add-architecture i386
 RUN  apt-get -y update
 RUN apt-get -y install gcc-multilib libc6:i386 libstdc++6:i386 libncurses5:i386 texi2html chrpath diffstat subversion libgl1-mesa-dev libglu1-mesa-dev libsdl1.2-dev texinfo gawk gcc gcc-multilib help2man g++ git-core python-gtk2 bash diffutils xz-utils make file screen bzip2 wget ccache mc sudo 
 #LTS
-RUN apt-get -y install gawk wget git-core diffstat unzip texinfo gcc-multilib build-essential chrpath socat cpio python python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping libsdl1.2-dev xterm
+RUN apt-get -y install gawk wget git-core diffstat unzip texinfo gcc-multilib build-essential chrpath socat cpio python python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping libsdl1.2-dev
+
+# Required Packages for the Host Development System
+# http://www.yoctoproject.org/docs/latest/mega-manual/mega-manual.html#required-packages-for-the-host-development-system
+RUN apt-get install -y gawk wget git-core diffstat unzip texinfo gcc-multilib g++-multilib \
+     build-essential chrpath socat cpio python python3 python3-pip python3-pexpect \
+          apt-utils tmux xz-utils debianutils iputils-ping libncurses5-dev
+
+# Additional host packages required by poky/scripts/wic
+RUN apt-get install -y curl dosfstools mtools parted syslinux tree zip
+
 RUN apt-get install -y byobu vim
+RUN apt-get install -y locales
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    dpkg-reconfigure --frontend=noninteractive locales && \
+    update-locale LANG=en_US.UTF-8
+
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
+
+# User management
+RUN groupadd -g 1000 build && useradd -u 30000 -g 1000 -ms /bin/bash build  --create-home && usermod -a -G sudo build && usermod -a -G users build
+RUN echo "build ALL=(ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
+USER build
