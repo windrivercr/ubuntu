@@ -8,4 +8,3 @@ RUN apt-get -y install gcc-multilib libc6:i386 libstdc++6:i386 libncurses5:i386 
 #LTS
 RUN apt-get -y install gawk wget git-core diffstat unzip texinfo gcc-multilib build-essential chrpath socat cpio python python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping libsdl1.2-dev xterm
 RUN apt-get install -y byobu vim
-RUN useradd build_user
